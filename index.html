@@ -90,6 +90,17 @@
   .hud .score span.c{ color:var(--green); } .hud .score span.w{ color:var(--red); }
   .hud .mode-badge{ font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); border:1px solid var(--ink-soft); padding:3px 8px; border-radius:3px;}
 
+  /* Bloque de respuesta: input + botones, ubicado FUERA del rosco y
+     fijado abajo de la pantalla (position:sticky) para que quede siempre
+     visible sobre el teclado del celular, sin importar el alto del rosco. */
+  .answer-dock{
+    position: sticky; bottom: 0; z-index: 30;
+    background: var(--paper);
+    width: 100%; max-width: 460px;
+    padding: 12px 0 6px;
+    border-top: 1px solid rgba(30,42,50,0.12);
+  }
+
   .rosco-area{ position:relative; width: 420px; height:420px; max-width:88vw; max-height:88vw; }
   .rosco-letter{ position:absolute; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:16px; background:#fff; border:2px solid var(--ink); color:var(--ink); transform: translate(-50%,-50%); transition: background .2s, color .2s, border-color .2s, transform .15s;}
   .rosco-letter.correct{ background:var(--green-bg); border-color:var(--green); color:var(--green); }
@@ -258,13 +269,15 @@
         <div class="hint" id="hintDisplay"></div>
       </div>
     </div>
-    <div class="answer-row">
-      <input type="text" id="answerInput" class="answer-input mono" autocomplete="off" placeholder="Escribe tu respuesta…">
-      <div class="answer-actions">
-        <button class="btn secondary" id="passBtn">Pasapalabra</button>
-        <button class="btn secondary" id="hintBtn">Pista (−5s)</button>
-        <button class="btn" id="checkBtn">Comprobar</button>
-        <button class="btn danger" id="quitBtn">Rendirse</button>
+    <div class="answer-dock">
+      <div class="answer-row">
+        <input type="text" id="answerInput" class="answer-input mono" autocomplete="off" placeholder="Escribe tu respuesta…">
+        <div class="answer-actions">
+          <button class="btn secondary" id="passBtn">Pasapalabra</button>
+          <button class="btn secondary" id="hintBtn">Pista (−5s)</button>
+          <button class="btn" id="checkBtn">Comprobar</button>
+          <button class="btn danger" id="quitBtn">Rendirse</button>
+        </div>
       </div>
     </div>
   </section>
@@ -282,13 +295,15 @@
       <div class="def" id="promptDefP">Cargando…</div>
       <div class="hint" id="hintDisplayP"></div>
     </div>
-    <div class="answer-row">
-      <input type="text" id="answerInputP" class="answer-input mono" autocomplete="off" placeholder="Escribe tu respuesta…">
-      <div class="answer-actions">
-        <button class="btn secondary" id="passBtnP">Pasapalabra</button>
-        <button class="btn secondary" id="hintBtnP">Pista</button>
-        <button class="btn" id="checkBtnP">Comprobar</button>
-        <button class="btn danger" id="quitBtnP">Terminar</button>
+    <div class="answer-dock">
+      <div class="answer-row">
+        <input type="text" id="answerInputP" class="answer-input mono" autocomplete="off" placeholder="Escribe tu respuesta…">
+        <div class="answer-actions">
+          <button class="btn secondary" id="passBtnP">Pasapalabra</button>
+          <button class="btn secondary" id="hintBtnP">Pista</button>
+          <button class="btn" id="checkBtnP">Comprobar</button>
+          <button class="btn danger" id="quitBtnP">Terminar</button>
+        </div>
       </div>
     </div>
   </section>

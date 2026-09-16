@@ -81,7 +81,7 @@
   .cat-actions{ display:flex; gap:8px; margin-top:8px; }
   .cat-actions button{ font-size:11px; padding:4px 8px; background:transparent; color:var(--teal); border:1px solid var(--teal); border-radius:3px;}
 
-  .game-wrap{ display:flex; flex-direction:column; align-items:center; gap:18px; width:100%; }
+  .game-wrap{ display:flex; flex-direction:column; align-items:center; gap:18px; width:100%; padding-bottom: 190px; }
   .hud{ display:flex; align-items:center; gap:26px; flex-wrap:wrap; justify-content:center;}
   .hud .timer{ font-family:'IBM Plex Mono',monospace; font-size:28px; font-weight:600; padding: 4px 16px; border-radius:4px; border:2px solid var(--teal-dark); color:var(--teal-dark); min-width:96px; text-align:center;}
   .hud .timer.low{ color:var(--burgundy); border-color:var(--burgundy); animation: pulse 1s infinite; }
@@ -90,16 +90,22 @@
   .hud .score span.c{ color:var(--green); } .hud .score span.w{ color:var(--red); }
   .hud .mode-badge{ font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); border:1px solid var(--ink-soft); padding:3px 8px; border-radius:3px;}
 
-  /* Bloque de respuesta: input + botones, ubicado FUERA del rosco y
-     fijado abajo de la pantalla (position:sticky) para que quede siempre
-     visible sobre el teclado del celular, sin importar el alto del rosco. */
+  /* Bloque de respuesta: input + botones, ubicado FUERA del rosco.
+     Queda "flotando" pegado justo encima del teclado del celular en todo
+     momento: JS mide window.visualViewport y ajusta la distancia al borde
+     inferior en tiempo real, sin importar el alto del rosco ni el scroll
+     de la página. En escritorio (sin teclado virtual) simplemente queda
+     pegado abajo de la pantalla. */
   .answer-dock{
-    position: sticky; bottom: 0; z-index: 30;
+    position: fixed; left:0; right:0; bottom: 0; z-index: 40;
+    display:flex; justify-content:center;
     background: var(--paper);
-    width: 100%; max-width: 460px;
-    padding: 12px 0 6px;
-    border-top: 1px solid rgba(30,42,50,0.12);
+    padding: 12px 16px calc(10px + env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(30,42,50,0.15);
+    box-shadow: 0 -4px 12px rgba(30,42,50,0.08);
+    transition: bottom 0.08s ease-out;
   }
+  .answer-dock .answer-row{ width:100%; max-width:460px; }
 
   .rosco-area{ position:relative; width: 420px; height:420px; max-width:88vw; max-height:88vw; }
   .rosco-letter{ position:absolute; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:16px; background:#fff; border:2px solid var(--ink); color:var(--ink); transform: translate(-50%,-50%); transition: background .2s, color .2s, border-color .2s, transform .15s;}
@@ -361,6 +367,9 @@
   function showView(name){
     Object.values(views).forEach(v => v.classList.add('hidden'));
     views[name].classList.remove('hidden');
+    if ((name === 'game' || name === 'practice') && typeof updateDockPosition === 'function') {
+      setTimeout(updateDockPosition, 0);
+    }
   }
 
   /* ---------------- Sonido (Web Audio, sin archivos externos) ---------------- */
@@ -833,6 +842,27 @@
   document.getElementById('playAgainBtn').addEventListener('click', async () => { await renderHomeStats(); showView('home'); });
 
   window.addEventListener('resize', () => { if (game && !views.game.classList.contains('hidden')) layoutRosco(); });
+
+  /* ---------------- Barra de respuesta flotando sobre el teclado ---------------- */
+  function updateDockPosition(){
+    document.querySelectorAll('.answer-dock').forEach(dock => {
+      if (!window.visualViewport) { dock.style.bottom = '0px'; return; }
+      const vv = window.visualViewport;
+      const keyboardHeight = window.innerHeight - vv.height - vv.offsetTop;
+      dock.style.bottom = Math.max(Math.round(keyboardHeight), 0) + 'px';
+    });
+  }
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', updateDockPosition);
+    window.visualViewport.addEventListener('scroll', updateDockPosition);
+  }
+  window.addEventListener('resize', updateDockPosition);
+  window.addEventListener('orientationchange', updateDockPosition);
+  document.getElementById('answerInput').addEventListener('focus', () => setTimeout(updateDockPosition, 50));
+  document.getElementById('answerInput').addEventListener('blur', () => setTimeout(updateDockPosition, 50));
+  document.getElementById('answerInputP').addEventListener('focus', () => setTimeout(updateDockPosition, 50));
+  document.getElementById('answerInputP').addEventListener('blur', () => setTimeout(updateDockPosition, 50));
+  updateDockPosition();
 
   /* ---------------- REPASO DE ERRORES (lineal, sin tiempo) ---------------- */
   document.getElementById('reviewBtn').addEventListener('click', startReview);

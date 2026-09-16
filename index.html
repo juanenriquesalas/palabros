@@ -10,20 +10,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper: #F1E9D6;
-    --paper-2: #E7DCC2;
-    --ink: #1E2A32;
-    --ink-soft: #4B5A63;
-    --teal: #12484A;
-    --teal-dark: #0B3234;
-    --burgundy: #7A2E2E;
-    --gold: #C79A3D;
-    --green: #2F6B4F;
-    --green-bg: #DCEBDF;
-    --red: #A23B32;
-    --red-bg: #F3DCD8;
-    --skip-bg: #E4DCC6;
-    --shadow: rgba(30,42,50,0.25);
+    --paper: #F1E9D6; --paper-2: #E7DCC2; --ink: #1E2A32; --ink-soft: #4B5A63;
+    --teal: #12484A; --teal-dark: #0B3234; --burgundy: #7A2E2E; --gold: #C79A3D;
+    --green: #2F6B4F; --green-bg: #DCEBDF; --red: #A23B32; --red-bg: #F3DCD8;
+    --skip-bg: #E4DCC6; --shadow: rgba(30,42,50,0.25);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;height:100%;}
@@ -32,167 +22,128 @@
     background-image:
       radial-gradient(circle at 15% 10%, rgba(199,154,61,0.10), transparent 40%),
       radial-gradient(circle at 90% 85%, rgba(18,72,74,0.10), transparent 45%);
-    color: var(--ink);
-    font-family: 'Fraunces', Georgia, serif;
-    min-height:100%;
-    display:flex;
-    flex-direction:column;
+    color: var(--ink); font-family: 'Fraunces', Georgia, serif;
+    min-height:100%; display:flex; flex-direction:column;
   }
   .mono{ font-family:'IBM Plex Mono', monospace; }
-  header.topbar{
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 18px 28px;
-    border-bottom: 1px solid rgba(30,42,50,0.15);
-  }
+  header.topbar{ display:flex; align-items:center; justify-content:space-between; padding: 18px 28px; border-bottom: 1px solid rgba(30,42,50,0.15); flex-wrap:wrap; gap:10px;}
   .brand{ display:flex; align-items:center; gap:12px; }
-  .brand .mark{
-    width:38px;height:38px;border-radius:50%;
-    background: var(--teal-dark);
-    color: var(--gold);
-    display:flex;align-items:center;justify-content:center;
-    font-weight:700; font-size:20px; border:2px solid var(--gold);
-  }
+  .brand .mark{ width:38px;height:38px;border-radius:50%; background: var(--teal-dark); color: var(--gold); display:flex;align-items:center;justify-content:center; font-weight:700; font-size:20px; border:2px solid var(--gold); }
   .brand h1{ font-size:20px; margin:0; font-weight:700; letter-spacing:0.3px;}
   .brand .sub{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); letter-spacing:0.08em;}
+  .nav-links{ display:flex; gap:8px; flex-wrap:wrap; }
+  .nav-links button{ background:transparent; color:var(--teal-dark); font-family:'IBM Plex Mono',monospace; font-size:12px; padding:6px 10px; border:1px solid rgba(30,42,50,0.2); border-radius:3px;}
+  .nav-links button:hover{ background: var(--paper-2); }
   .user-box{ display:flex; align-items:center; gap:10px; }
   .user-box img{ width:32px;height:32px;border-radius:50%; border:1px solid var(--ink-soft); }
   .user-box .name{ font-family:'IBM Plex Mono',monospace; font-size:13px; }
   button{ font-family:'IBM Plex Mono',monospace; cursor:pointer; border:none; }
-  .btn{
-    padding:9px 16px; border-radius:3px; font-size:13px; font-weight:500;
-    letter-spacing:0.02em; transition: transform .08s ease, box-shadow .08s ease;
-    background: var(--teal); color:#fff;
-  }
+  .btn{ padding:9px 16px; border-radius:3px; font-size:13px; font-weight:500; letter-spacing:0.02em; transition: transform .08s ease, box-shadow .08s ease; background: var(--teal); color:#fff;}
   .btn:hover{ transform: translateY(-1px); box-shadow:0 3px 0 rgba(0,0,0,0.15);}
   .btn:active{ transform: translateY(0); box-shadow:none; }
   .btn.secondary{ background: transparent; color:var(--teal); border:1.5px solid var(--teal); }
   .btn.danger{ background: var(--burgundy); }
   .btn.gold{ background: var(--gold); color:var(--teal-dark); }
   .btn:disabled{ opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none;}
-
   main{ flex:1; display:flex; align-items:center; justify-content:center; padding: 24px; }
 
-  /* ---------- LOGIN ---------- */
-  .login-card{
-    max-width: 420px; width:100%;
-    background: var(--paper-2);
-    border: 1px solid rgba(30,42,50,0.15);
-    border-radius: 6px;
-    padding: 40px 34px;
-    text-align:center;
-    box-shadow: 0 10px 30px var(--shadow);
-  }
-  .login-card .ring{
-    width:84px;height:84px;border-radius:50%;
-    margin: 0 auto 20px;
-    border: 6px solid var(--teal-dark);
-    display:flex;align-items:center;justify-content:center;
-    background: var(--paper);
-    font-size: 34px; font-weight:700; color:var(--teal-dark);
-  }
-  .login-card h2{ margin: 0 0 8px; font-size: 26px; }
-  .login-card p{ color:var(--ink-soft); font-size:14px; line-height:1.5; margin-bottom:26px;}
-  .google-btn{
-    display:flex; align-items:center; justify-content:center; gap:10px;
-    width:100%; padding:12px; border-radius:4px;
-    background:#fff; color:#1E2A32; border:1px solid #d8d0bb;
-    font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:500;
-  }
+  .card{ max-width: 460px; width:100%; background: var(--paper-2); border: 1px solid rgba(30,42,50,0.15); border-radius: 6px; padding: 32px; box-shadow: 0 10px 30px var(--shadow); }
+  .card h2{ margin: 0 0 8px; font-size: 24px; }
+  .card p.lede{ color:var(--ink-soft); font-size:14px; line-height:1.5; }
+
+  .login-card{ text-align:center; }
+  .login-card .ring{ width:84px;height:84px;border-radius:50%; margin: 0 auto 20px; border: 6px solid var(--teal-dark); display:flex;align-items:center;justify-content:center; background: var(--paper); font-size: 34px; font-weight:700; color:var(--teal-dark);}
+  .google-btn{ display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:12px; border-radius:4px; background:#fff; color:#1E2A32; border:1px solid #d8d0bb; font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:500;}
   .google-btn:hover{ box-shadow: 0 3px 10px rgba(0,0,0,0.12); }
   .error-msg{ color: var(--burgundy); font-size:13px; margin-top:14px; font-family:'IBM Plex Mono',monospace;}
 
-  /* ---------- HOME / MENU ---------- */
-  .home{ display:flex; flex-direction:column; align-items:center; gap:26px; max-width:520px; width:100%; }
+  .home{ display:flex; flex-direction:column; align-items:center; gap:22px; max-width:560px; width:100%; }
   .home h2{ font-size: 30px; margin:0; text-align:center; }
   .home .lede{ color:var(--ink-soft); text-align:center; margin-top:-14px; font-size:15px;}
-  .home .actions{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
-  .stat-row{ display:flex; gap:18px; margin-top:6px; }
-  .stat-pill{
-    background: var(--paper-2); border:1px solid rgba(30,42,50,0.12);
-    border-radius:4px; padding:10px 16px; text-align:center; min-width:96px;
-  }
+  .home .actions{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+  .home .actions-secondary{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  .stat-row{ display:flex; gap:14px; margin-top:6px; flex-wrap:wrap; justify-content:center;}
+  .stat-pill{ background: var(--paper-2); border:1px solid rgba(30,42,50,0.12); border-radius:4px; padding:10px 16px; text-align:center; min-width:88px;}
   .stat-pill .num{ font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; color:var(--teal-dark);}
   .stat-pill .lbl{ font-size:11px; color:var(--ink-soft); letter-spacing:0.04em; text-transform:uppercase; }
 
-  /* ---------- SETTINGS ---------- */
-  .settings-card{
-    max-width:420px; width:100%; background:var(--paper-2);
-    border:1px solid rgba(30,42,50,0.15); border-radius:6px; padding:30px;
-  }
-  .settings-card h2{ margin-top:0; font-size:22px; }
+  .settings-card{ max-width:480px; }
   .field{ margin-bottom: 22px; }
   .field label{ display:block; font-family:'IBM Plex Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); margin-bottom:8px;}
   .slider-row{ display:flex; align-items:center; gap:14px; }
   input[type=range]{ flex:1; accent-color: var(--teal); }
   .slider-val{ font-family:'IBM Plex Mono',monospace; font-weight:600; min-width:56px; text-align:right; }
-  .toggle-row{ display:flex; align-items:center; justify-content:space-between; }
+  .toggle-row{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
   .settings-actions{ display:flex; justify-content:space-between; margin-top:10px; }
+  .cat-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:6px; max-height:220px; overflow-y:auto; padding:10px; background:var(--paper); border-radius:4px; border:1px solid rgba(30,42,50,0.12);}
+  .cat-item{ display:flex; align-items:center; gap:6px; font-size:12px; }
+  .cat-item span.n{ color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; font-size:10px;}
+  .cat-actions{ display:flex; gap:8px; margin-top:8px; }
+  .cat-actions button{ font-size:11px; padding:4px 8px; background:transparent; color:var(--teal); border:1px solid var(--teal); border-radius:3px;}
 
-  /* ---------- GAME ---------- */
   .game-wrap{ display:flex; flex-direction:column; align-items:center; gap:18px; width:100%; }
-  .hud{ display:flex; align-items:center; gap:26px; }
-  .hud .timer{
-    font-family:'IBM Plex Mono',monospace; font-size:28px; font-weight:600;
-    padding: 4px 16px; border-radius:4px; border:2px solid var(--teal-dark); color:var(--teal-dark);
-    min-width:96px; text-align:center;
-  }
+  .hud{ display:flex; align-items:center; gap:26px; flex-wrap:wrap; justify-content:center;}
+  .hud .timer{ font-family:'IBM Plex Mono',monospace; font-size:28px; font-weight:600; padding: 4px 16px; border-radius:4px; border:2px solid var(--teal-dark); color:var(--teal-dark); min-width:96px; text-align:center;}
   .hud .timer.low{ color:var(--burgundy); border-color:var(--burgundy); animation: pulse 1s infinite; }
   @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.5;} }
   .hud .score{ display:flex; gap:14px; font-family:'IBM Plex Mono',monospace; font-size:13px;}
   .hud .score span.c{ color:var(--green); } .hud .score span.w{ color:var(--red); }
+  .hud .mode-badge{ font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); border:1px solid var(--ink-soft); padding:3px 8px; border-radius:3px;}
 
   .rosco-area{ position:relative; width: 420px; height:420px; max-width:88vw; max-height:88vw; }
-  .rosco-letter{
-    position:absolute; width:40px; height:40px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:16px;
-    background:#fff; border:2px solid var(--ink); color:var(--ink);
-    transform: translate(-50%,-50%);
-    transition: background .2s, color .2s, border-color .2s, transform .15s;
-  }
+  .rosco-letter{ position:absolute; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:16px; background:#fff; border:2px solid var(--ink); color:var(--ink); transform: translate(-50%,-50%); transition: background .2s, color .2s, border-color .2s, transform .15s;}
   .rosco-letter.correct{ background:var(--green-bg); border-color:var(--green); color:var(--green); }
   .rosco-letter.wrong{ background:var(--red-bg); border-color:var(--red); color:var(--red); }
   .rosco-letter.skipped{ background:var(--skip-bg); border-color:var(--ink-soft); color:var(--ink-soft); }
   .rosco-letter.active{ transform: translate(-50%,-50%) scale(1.28); border-color:var(--gold); box-shadow:0 0 0 4px rgba(199,154,61,0.35); z-index:5;}
-
-  .rosco-center{
-    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    width: 250px; max-width:56vw; text-align:center;
-  }
+  .rosco-center{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width: 250px; max-width:56vw; text-align:center;}
   .rosco-center .prompt{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.05em; color:var(--ink-soft); text-transform:uppercase;}
   .rosco-center .prompt b{ color:var(--teal-dark); font-size:15px; }
-  .rosco-center .def{ font-size: 14px; line-height:1.35; margin: 8px 0 14px; min-height: 54px; }
+  .rosco-center .def{ font-size: 14px; line-height:1.35; margin: 8px 0 6px; min-height: 54px; }
+  .rosco-center .hint{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--gold); letter-spacing:0.12em; min-height:16px;}
+
+  .practice-progress{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-soft); text-align:center;}
+  .practice-card{ max-width:440px; width:100%; text-align:center; }
+  .practice-card .prompt{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.05em; color:var(--ink-soft); text-transform:uppercase;}
+  .practice-card .prompt b{ color:var(--teal-dark); font-size:15px; }
+  .practice-card .def{ font-size: 15px; line-height:1.4; margin: 10px 0; min-height:50px;}
+  .practice-card .hint{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--gold); letter-spacing:0.12em; min-height:16px; margin-bottom:6px;}
 
   .answer-row{ display:flex; flex-direction:column; align-items:center; gap:10px; width:100%; max-width:460px; }
-  .answer-input{
-    width:100%; padding:12px 14px; font-size:16px; text-align:center;
-    border:2px solid var(--ink); border-radius:4px; background:#fff; color:var(--ink);
-    font-family:'IBM Plex Mono',monospace; letter-spacing:0.03em; text-transform:uppercase;
-  }
+  .answer-input{ width:100%; padding:12px 14px; font-size:16px; text-align:center; border:2px solid var(--ink); border-radius:4px; background:#fff; color:var(--ink); font-family:'IBM Plex Mono',monospace; letter-spacing:0.03em; text-transform:uppercase;}
   .answer-input:focus{ outline:none; border-color: var(--teal); }
   .answer-input.flash-correct{ border-color: var(--green); background: var(--green-bg); }
   .answer-input.flash-wrong{ border-color: var(--red); background: var(--red-bg); }
-  .answer-actions{ display:flex; gap:10px; }
+  .answer-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center;}
 
-  /* ---------- RESULTS ---------- */
-  .results-card{
-    max-width:460px; width:100%; background:var(--paper-2);
-    border:1px solid rgba(30,42,50,0.15); border-radius:6px; padding:32px; text-align:center;
-  }
-  .results-card h2{ margin:0 0 6px; font-size:26px;}
+  .results-card{ text-align:center; }
   .results-card .outcome{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-soft); margin-bottom:20px; }
-  .results-stats{ display:flex; justify-content:center; gap:16px; margin-bottom:24px; }
+  .results-stats{ display:flex; justify-content:center; gap:16px; margin-bottom:24px; flex-wrap:wrap;}
   .review-list{ text-align:left; max-height:220px; overflow-y:auto; border-top:1px solid rgba(30,42,50,0.15); padding-top:14px; margin-bottom:22px;}
   .review-item{ display:flex; gap:10px; font-size:13px; padding:4px 0; align-items:baseline;}
   .review-item .l{ font-family:'IBM Plex Mono',monospace; font-weight:700; width:22px; flex-shrink:0;}
-  .review-item.correct .l{ color:var(--green); }
-  .review-item.wrong .l{ color:var(--red); }
-  .review-item .txt{ color:var(--ink-soft); }
-  .review-item .txt b{ color:var(--ink); font-weight:600;}
+  .review-item.correct .l{ color:var(--green); } .review-item.wrong .l{ color:var(--red); }
+  .review-item .txt{ color:var(--ink-soft); } .review-item .txt b{ color:var(--ink); font-weight:600;}
+  .review-item .approx{ font-size:11px; color:var(--gold); }
+
+  .stats-list{ text-align:left; max-height:320px; overflow-y:auto; }
+  .stats-row{ display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid rgba(30,42,50,0.08);}
+  .stats-row .l{ font-family:'IBM Plex Mono',monospace; font-weight:700; width:22px;}
+  .stats-row .bar-bg{ flex:1; height:8px; background:var(--paper); border-radius:4px; overflow:hidden;}
+  .stats-row .bar-fill{ height:100%; background:var(--burgundy); }
+  .stats-row .pct{ font-family:'IBM Plex Mono',monospace; font-size:12px; width:44px; text-align:right; color:var(--ink-soft);}
+
+  .ranking-list{ text-align:left; }
+  .rank-row{ display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid rgba(30,42,50,0.08);}
+  .rank-row .pos{ font-family:'IBM Plex Mono',monospace; font-weight:700; width:24px; color:var(--teal-dark);}
+  .rank-row img{ width:28px;height:28px;border-radius:50%;}
+  .rank-row .rname{ flex:1; font-size:13px;}
+  .rank-row .rtime{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-soft);}
 
   footer{ text-align:center; padding:14px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); }
   .hidden{ display:none !important; }
   .loading{ font-family:'IBM Plex Mono',monospace; color:var(--ink-soft); font-size:13px; }
+  .empty-msg{ font-family:'IBM Plex Mono',monospace; color:var(--ink-soft); font-size:13px; text-align:center; padding:20px 0;}
 </style>
 </head>
 <body>
@@ -202,8 +153,14 @@
     <div class="mark">R</div>
     <div>
       <h1>El Rosco</h1>
-      <div class="sub">PALABROS · 25 LETRAS · 1 INTENTO</div>
+      <div class="sub">PALABROS · 26 LETRAS · 1 INTENTO</div>
     </div>
+  </div>
+  <div class="nav-links hidden" id="navLinks">
+    <button data-nav="home">Inicio</button>
+    <button data-nav="stats">Estadísticas</button>
+    <button data-nav="ranking">Ranking</button>
+    <button data-nav="settings">Ajustes</button>
   </div>
   <div id="userBox" class="user-box hidden">
     <img id="userPhoto" src="" alt="">
@@ -214,10 +171,10 @@
 
 <main id="mainArea">
   <!-- LOGIN -->
-  <section id="view-login" class="login-card">
+  <section id="view-login" class="card login-card">
     <div class="ring">R</div>
     <h2>Bienvenido</h2>
-    <p>Inicia sesión con tu cuenta de Google para guardar tus ajustes y tu historial de partidas.</p>
+    <p class="lede">Inicia sesión con tu cuenta de Google para guardar tus ajustes, tu historial y tu puesto en el ranking.</p>
     <button id="googleLoginBtn" class="google-btn">
       <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.6-6 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34 5.1 29.3 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.9 19 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34 5.1 29.3 3 24 3 16.3 3 9.7 7.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 36.4 26.7 37 24 37c-5.2 0-9.6-3.4-11.2-8.1l-6.5 5C9.6 40.6 16.2 45 24 45z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.6l6.2 5.2C40.9 36 44 30.6 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
       Iniciar sesión con Google
@@ -228,16 +185,22 @@
   <!-- HOME -->
   <section id="view-home" class="home hidden">
     <h2>¿Listo para el Rosco?</h2>
-    <p class="lede">25 letras. Una definición por letra. El reloj no perdona.</p>
+    <p class="lede">Una definición por letra. El reloj no perdona.</p>
     <div class="stat-row" id="homeStats"></div>
     <div class="actions">
       <button class="btn gold" id="playBtn">Jugar Rosco</button>
-      <button class="btn secondary" id="settingsBtn">Ajustes</button>
+      <button class="btn secondary" id="practiceBtn">Modo práctica (sin tiempo)</button>
+    </div>
+    <div class="actions-secondary">
+      <button class="btn secondary" id="reviewBtn">Repasar errores</button>
+      <button class="btn secondary" id="statsNavBtn">Estadísticas</button>
+      <button class="btn secondary" id="rankingNavBtn">Ranking</button>
+      <button class="btn secondary" id="settingsNavBtn">Ajustes</button>
     </div>
   </section>
 
   <!-- SETTINGS -->
-  <section id="view-settings" class="settings-card hidden">
+  <section id="view-settings" class="card settings-card hidden">
     <h2>Ajustes</h2>
     <div class="field">
       <label>Tiempo del Rosco</label>
@@ -246,9 +209,18 @@
         <span class="slider-val mono" id="timeVal">2:00</span>
       </div>
     </div>
-    <div class="field toggle-row">
-      <label style="margin-bottom:0;">Aceptar respuesta sin tilde</label>
-      <input type="checkbox" id="accentToggle" checked>
+    <div class="field">
+      <div class="toggle-row"><label style="margin-bottom:0;">Aceptar respuesta sin tilde</label><input type="checkbox" id="accentToggle" checked></div>
+      <div class="toggle-row"><label style="margin-bottom:0;">Tolerar pequeñas erratas (1 letra)</label><input type="checkbox" id="fuzzyToggle" checked></div>
+      <div class="toggle-row"><label style="margin-bottom:0;">Sonido</label><input type="checkbox" id="soundToggle" checked></div>
+    </div>
+    <div class="field">
+      <label>Categorías incluidas <span id="catCount" class="mono" style="color:var(--ink-soft);"></span></label>
+      <div class="cat-grid" id="catGrid"></div>
+      <div class="cat-actions">
+        <button id="catAll">Todas</button>
+        <button id="catNoZZ">Excluir ZZ</button>
+      </div>
     </div>
     <div class="settings-actions">
       <button class="btn secondary" id="backFromSettings">Volver</button>
@@ -256,38 +228,78 @@
     </div>
   </section>
 
-  <!-- GAME -->
+  <!-- STATS -->
+  <section id="view-stats" class="card hidden" style="max-width:480px;">
+    <h2>Letras que más fallas</h2>
+    <p class="lede">Calculado sobre tus últimas 50 partidas de Rosco.</p>
+    <div class="stats-list" id="statsList"></div>
+    <div class="settings-actions"><button class="btn secondary" id="backFromStats">Volver</button><div></div></div>
+  </section>
+
+  <!-- RANKING -->
+  <section id="view-ranking" class="card hidden" style="max-width:460px;">
+    <h2>Ranking</h2>
+    <p class="lede">Mejor tiempo entre quienes han completado el Rosco.</p>
+    <div class="ranking-list" id="rankingList"></div>
+    <div class="settings-actions"><button class="btn secondary" id="backFromRanking">Volver</button><div></div></div>
+  </section>
+
+  <!-- GAME (Rosco normal / práctica) -->
   <section id="view-game" class="game-wrap hidden">
     <div class="hud">
       <div class="timer mono" id="timerDisplay">2:00</div>
-      <div class="score">
-        <span class="c" id="scoreCorrect">✓ 0</span>
-        <span class="w" id="scoreWrong">✗ 0</span>
-      </div>
+      <div class="score"><span class="c" id="scoreCorrect">✓ 0</span><span class="w" id="scoreWrong">✗ 0</span></div>
+      <div class="mode-badge" id="modeBadge">ROSCO</div>
     </div>
     <div class="rosco-area" id="roscoArea">
       <div class="rosco-center">
         <div class="prompt" id="promptMode">EMPIEZA CON <b id="promptLetter">A</b>:</div>
         <div class="def" id="promptDef">Cargando…</div>
+        <div class="hint" id="hintDisplay"></div>
       </div>
     </div>
     <div class="answer-row">
       <input type="text" id="answerInput" class="answer-input mono" autocomplete="off" placeholder="Escribe tu respuesta…">
       <div class="answer-actions">
         <button class="btn secondary" id="passBtn">Pasapalabra</button>
+        <button class="btn secondary" id="hintBtn">Pista (−5s)</button>
         <button class="btn" id="checkBtn">Comprobar</button>
         <button class="btn danger" id="quitBtn">Rendirse</button>
       </div>
     </div>
   </section>
 
+  <!-- PRACTICE / REPASO (lineal) -->
+  <section id="view-practice" class="game-wrap hidden">
+    <div class="hud">
+      <div class="timer mono" id="timerDisplayP">∞</div>
+      <div class="score"><span class="c" id="scoreCorrectP">✓ 0</span><span class="w" id="scoreWrongP">✗ 0</span></div>
+      <div class="mode-badge" id="modeBadgeP">REPASO</div>
+    </div>
+    <div class="practice-progress" id="practiceProgress">1 / 10</div>
+    <div class="practice-card">
+      <div class="prompt" id="promptModeP">EMPIEZA CON <b id="promptLetterP">A</b>:</div>
+      <div class="def" id="promptDefP">Cargando…</div>
+      <div class="hint" id="hintDisplayP"></div>
+    </div>
+    <div class="answer-row">
+      <input type="text" id="answerInputP" class="answer-input mono" autocomplete="off" placeholder="Escribe tu respuesta…">
+      <div class="answer-actions">
+        <button class="btn secondary" id="passBtnP">Pasapalabra</button>
+        <button class="btn secondary" id="hintBtnP">Pista</button>
+        <button class="btn" id="checkBtnP">Comprobar</button>
+        <button class="btn danger" id="quitBtnP">Terminar</button>
+      </div>
+    </div>
+  </section>
+
   <!-- RESULTS -->
-  <section id="view-results" class="results-card hidden">
+  <section id="view-results" class="card results-card hidden">
     <h2 id="resultTitle">¡Rosco completado!</h2>
     <div class="outcome" id="resultOutcome"></div>
     <div class="results-stats" id="resultStats"></div>
     <div class="review-list" id="reviewList"></div>
-    <button class="btn gold" id="playAgainBtn">Jugar otra vez</button>
+    <button class="btn gold" id="playAgainBtn">Volver al inicio</button>
   </section>
 
   <div id="loadingMsg" class="loading hidden">Cargando banco de palabras…</div>
@@ -295,7 +307,6 @@
 
 <footer>Formato inspirado en «El Rosco» de Pasapalabra · Proyecto personal sin fines comerciales</footer>
 
-<!-- Firebase (modular SDK vía CDN) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import {
@@ -311,20 +322,25 @@
   const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
 
-  /* ---------------- Estado global ---------------- */
+  const LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','X','Y','Z'];
+
   let currentUser = null;
   let wordBank = [];
-  let settings = { timeLimit: 120, ignoreAccents: true };
-  let game = null; // se crea al empezar partida
+  let categories = []; // [{name, count}]
+  let settings = { timeLimit: 120, ignoreAccents: true, fuzzy: true, sound: true, excludedCategories: [] };
+  let game = null;
+  let practice = null;
   let timerInterval = null;
-
-  const LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','X','Y','Z'];
+  let audioCtx = null;
 
   const views = {
     login: document.getElementById('view-login'),
     home: document.getElementById('view-home'),
     settings: document.getElementById('view-settings'),
+    stats: document.getElementById('view-stats'),
+    ranking: document.getElementById('view-ranking'),
     game: document.getElementById('view-game'),
+    practice: document.getElementById('view-practice'),
     results: document.getElementById('view-results'),
   };
   function showView(name){
@@ -332,14 +348,65 @@
     views[name].classList.remove('hidden');
   }
 
-  /* ---------------- Utilidades de texto ---------------- */
-  function stripAccents(s){
-    return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  /* ---------------- Sonido (Web Audio, sin archivos externos) ---------------- */
+  function ensureAudio(){
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
   }
+  function beep(freq, duration, type='sine', gainVal=0.05, delay=0){
+    if (!settings.sound) return;
+    try {
+      const ctx = ensureAudio();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type; osc.frequency.value = freq;
+      gain.gain.value = gainVal;
+      osc.connect(gain); gain.connect(ctx.destination);
+      const t0 = ctx.currentTime + delay;
+      osc.start(t0);
+      gain.gain.setValueAtTime(gainVal, t0);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t0 + duration);
+      osc.stop(t0 + duration + 0.02);
+    } catch(e) { /* silencioso si el navegador bloquea audio sin interacción */ }
+  }
+  function sndTick(){ beep(1200, 0.05, 'square', 0.03); }
+  function sndCorrect(){ beep(660, 0.09, 'sine', 0.06); beep(990, 0.12, 'sine', 0.06, 0.09); }
+  function sndWrong(){ beep(180, 0.28, 'sawtooth', 0.06); }
+  function sndTimeUp(){ [0,0.15,0.3,0.45].forEach(d => beep(240, 0.14, 'square', 0.07, d)); }
+
+  /* ---------------- Utilidades de texto ---------------- */
+  function stripAccents(s){ return s.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
   function normalize(s){
     let out = s.toUpperCase().trim().replace(/\s+/g,' ');
     if (settings.ignoreAccents) out = stripAccents(out);
     return out;
+  }
+  function levenshtein(a, b){
+    if (a === b) return 0;
+    const m = a.length, n = b.length;
+    if (Math.abs(m-n) > 2) return 99; // corte rápido, no nos interesa si difieren mucho
+    const dp = Array.from({length: m+1}, () => new Array(n+1).fill(0));
+    for (let i=0;i<=m;i++) dp[i][0] = i;
+    for (let j=0;j<=n;j++) dp[0][j] = j;
+    for (let i=1;i<=m;i++){
+      for (let j=1;j<=n;j++){
+        dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+      }
+    }
+    return dp[m][n];
+  }
+  function matchesAnswer(userValue, normAnswers){
+    const value = normalize(userValue);
+    if (!value) return { ok: false };
+    if (normAnswers.includes(value)) return { ok: true, approx: false };
+    if (settings.fuzzy) {
+      for (const ans of normAnswers) {
+        if (Math.abs(ans.length - value.length) <= 1 && levenshtein(value, ans) <= 1) {
+          return { ok: true, approx: true };
+        }
+      }
+    }
+    return { ok: false };
   }
 
   /* ---------------- Cargar banco de palabras ---------------- */
@@ -347,38 +414,60 @@
     document.getElementById('loadingMsg').classList.remove('hidden');
     const res = await fetch('./words.json');
     wordBank = await res.json();
+    const counts = {};
+    wordBank.forEach(w => { counts[w.c] = (counts[w.c]||0) + 1; });
+    categories = Object.keys(counts).sort().map(name => ({ name, count: counts[name] }));
     document.getElementById('loadingMsg').classList.add('hidden');
+  }
+  function activeWordBank(){
+    if (!settings.excludedCategories || settings.excludedCategories.length === 0) return wordBank;
+    const excl = new Set(settings.excludedCategories);
+    return wordBank.filter(w => !excl.has(w.c));
   }
 
   /* ---------------- Autenticación ---------------- */
   document.getElementById('googleLoginBtn').addEventListener('click', async () => {
     const errBox = document.getElementById('loginError');
     errBox.classList.add('hidden');
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (e) {
-      errBox.textContent = 'No se pudo iniciar sesión: ' + e.message;
-      errBox.classList.remove('hidden');
-    }
+    try { await signInWithPopup(auth, provider); }
+    catch (e) { errBox.textContent = 'No se pudo iniciar sesión: ' + e.message; errBox.classList.remove('hidden'); }
   });
   document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
 
   onAuthStateChanged(auth, async (user) => {
     currentUser = user;
     const userBox = document.getElementById('userBox');
+    const navLinks = document.getElementById('navLinks');
     if (user) {
       userBox.classList.remove('hidden');
+      navLinks.classList.remove('hidden');
       document.getElementById('userPhoto').src = user.photoURL || '';
       document.getElementById('userName').textContent = user.displayName || user.email;
-      await loadUserSettings();
       await loadWordBank();
+      await loadUserSettings();
+      renderCategoryGrid();
       await renderHomeStats();
       showView('home');
     } else {
       userBox.classList.add('hidden');
+      navLinks.classList.add('hidden');
       showView('login');
     }
   });
+
+  document.querySelectorAll('#navLinks button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.nav;
+      if (target === 'stats') renderStatsView();
+      if (target === 'ranking') renderRankingView();
+      showView(target);
+    });
+  });
+  document.getElementById('statsNavBtn').addEventListener('click', () => { renderStatsView(); showView('stats'); });
+  document.getElementById('rankingNavBtn').addEventListener('click', () => { renderRankingView(); showView('ranking'); });
+  document.getElementById('settingsNavBtn').addEventListener('click', () => showView('settings'));
+  document.getElementById('backFromStats').addEventListener('click', () => showView('home'));
+  document.getElementById('backFromRanking').addEventListener('click', () => showView('home'));
 
   /* ---------------- Ajustes (Firestore) ---------------- */
   async function loadUserSettings(){
@@ -393,77 +482,167 @@
     document.getElementById('timeSlider').value = settings.timeLimit;
     document.getElementById('timeVal').textContent = fmtTime(settings.timeLimit);
     document.getElementById('accentToggle').checked = settings.ignoreAccents;
+    document.getElementById('fuzzyToggle').checked = settings.fuzzy;
+    document.getElementById('soundToggle').checked = settings.sound;
   }
+  function renderCategoryGrid(){
+    const grid = document.getElementById('catGrid');
+    grid.innerHTML = '';
+    const excl = new Set(settings.excludedCategories || []);
+    categories.forEach(cat => {
+      const id = 'cat_' + cat.name.replace(/[^a-zA-Z0-9]/g,'');
+      const wrap = document.createElement('label');
+      wrap.className = 'cat-item';
+      wrap.innerHTML = `<input type="checkbox" id="${id}" data-cat="${cat.name}" ${excl.has(cat.name) ? '' : 'checked'}> ${cat.name} <span class="n">(${cat.count})</span>`;
+      grid.appendChild(wrap);
+    });
+    updateCatCount();
+    grid.querySelectorAll('input[type=checkbox]').forEach(cb => cb.addEventListener('change', updateCatCount));
+  }
+  function updateCatCount(){
+    const checked = Array.from(document.querySelectorAll('#catGrid input:checked')).length;
+    document.getElementById('catCount').textContent = `(${checked}/${categories.length} activas)`;
+  }
+  document.getElementById('catAll').addEventListener('click', () => {
+    document.querySelectorAll('#catGrid input').forEach(cb => cb.checked = true);
+    updateCatCount();
+  });
+  document.getElementById('catNoZZ').addEventListener('click', () => {
+    document.querySelectorAll('#catGrid input').forEach(cb => cb.checked = cb.dataset.cat !== 'ZZ');
+    updateCatCount();
+  });
+
   async function saveUserSettings(){
     settings.timeLimit = parseInt(document.getElementById('timeSlider').value, 10);
     settings.ignoreAccents = document.getElementById('accentToggle').checked;
-    if (currentUser) {
-      await setDoc(doc(db, 'users', currentUser.uid), { settings }, { merge: true });
-    }
+    settings.fuzzy = document.getElementById('fuzzyToggle').checked;
+    settings.sound = document.getElementById('soundToggle').checked;
+    settings.excludedCategories = Array.from(document.querySelectorAll('#catGrid input'))
+      .filter(cb => !cb.checked).map(cb => cb.dataset.cat);
+    if (currentUser) await setDoc(doc(db, 'users', currentUser.uid), { settings }, { merge: true });
     showView('home');
   }
-  document.getElementById('settingsBtn').addEventListener('click', () => showView('settings'));
+  document.getElementById('settingsBtn') && document.getElementById('settingsBtn').addEventListener('click', () => showView('settings'));
   document.getElementById('backFromSettings').addEventListener('click', () => showView('home'));
   document.getElementById('saveSettingsBtn').addEventListener('click', saveUserSettings);
   document.getElementById('timeSlider').addEventListener('input', (e) => {
     document.getElementById('timeVal').textContent = fmtTime(parseInt(e.target.value,10));
   });
   function fmtTime(sec){
+    if (sec === null || sec === undefined) return '∞';
     const m = Math.floor(sec/60), s = sec%60;
     return `${m}:${String(s).padStart(2,'0')}`;
   }
 
-  /* ---------------- Historial / estadísticas ---------------- */
+  /* ---------------- Historial / estadísticas / ranking ---------------- */
   async function saveGameResult(result){
     if (!currentUser) return;
-    await addDoc(collection(db, 'users', currentUser.uid, 'history'), {
-      ...result,
-      createdAt: serverTimestamp()
-    });
+    await addDoc(collection(db, 'users', currentUser.uid, 'history'), { ...result, createdAt: serverTimestamp() });
+    if (result.won) await maybeUpdateLeaderboard(result);
+  }
+  async function maybeUpdateLeaderboard(result){
+    const ref = doc(db, 'leaderboard', currentUser.uid);
+    const snap = await getDoc(ref);
+    const candidate = {
+      displayName: currentUser.displayName || 'Jugador',
+      photoURL: currentUser.photoURL || '',
+      bestTime: result.timeUsed,
+      correct: result.correct,
+      updatedAt: serverTimestamp()
+    };
+    if (!snap.exists() || result.timeUsed < snap.data().bestTime) {
+      await setDoc(ref, candidate);
+    }
   }
   async function renderHomeStats(){
     const box = document.getElementById('homeStats');
     box.innerHTML = '';
     if (!currentUser) return;
-    const q = query(collection(db, 'users', currentUser.uid, 'history'), orderBy('createdAt','desc'), limit(20));
+    const q = query(collection(db, 'users', currentUser.uid, 'history'), orderBy('createdAt','desc'), limit(50));
     const snap = await getDocs(q);
     const games = snap.docs.map(d => d.data());
-    const played = games.length;
-    const won = games.filter(g => g.won).length;
-    const bestTime = games.filter(g => g.won).reduce((min,g) => Math.min(min, g.timeUsed), Infinity);
-    const pills = [
+    const roscoGames = games.filter(g => g.mode !== 'repaso');
+    const played = roscoGames.length;
+    const won = roscoGames.filter(g => g.won).length;
+    const bestTime = roscoGames.filter(g => g.won).reduce((min,g) => Math.min(min, g.timeUsed), Infinity);
+    [
       { num: played, lbl: 'Últimas partidas' },
       { num: won, lbl: 'Roscos ganados' },
       { num: bestTime === Infinity ? '—' : fmtTime(Math.round(bestTime)), lbl: 'Mejor tiempo' },
-    ];
-    pills.forEach(p => {
+    ].forEach(p => {
       const div = document.createElement('div');
       div.className = 'stat-pill';
       div.innerHTML = `<div class="num">${p.num}</div><div class="lbl">${p.lbl}</div>`;
       box.appendChild(div);
     });
+    window.__lastGames = games; // usado por repaso/estadísticas
+  }
+  async function fetchRecentGames(n=50){
+    if (!currentUser) return [];
+    const q = query(collection(db, 'users', currentUser.uid, 'history'), orderBy('createdAt','desc'), limit(n));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => d.data());
+  }
+  async function renderStatsView(){
+    const list = document.getElementById('statsList');
+    list.innerHTML = '<div class="empty-msg">Calculando…</div>';
+    const games = await fetchRecentGames(50);
+    const attempts = {}, fails = {};
+    games.forEach(g => {
+      if (!g.letterResults) return;
+      Object.entries(g.letterResults).forEach(([letter, status]) => {
+        attempts[letter] = (attempts[letter]||0) + 1;
+        if (status === 'wrong') fails[letter] = (fails[letter]||0) + 1;
+      });
+    });
+    const rows = Object.keys(attempts)
+      .map(l => ({ letter: l, attempts: attempts[l], fails: fails[l]||0, pct: Math.round(100*(fails[l]||0)/attempts[l]) }))
+      .filter(r => r.attempts >= 2)
+      .sort((a,b) => b.pct - a.pct)
+      .slice(0, 15);
+    list.innerHTML = '';
+    if (rows.length === 0) {
+      list.innerHTML = '<div class="empty-msg">Todavía no hay suficientes partidas para calcular estadísticas por letra.</div>';
+      return;
+    }
+    rows.forEach(r => {
+      const div = document.createElement('div');
+      div.className = 'stats-row';
+      div.innerHTML = `<span class="l">${r.letter}</span><div class="bar-bg"><div class="bar-fill" style="width:${r.pct}%"></div></div><span class="pct">${r.pct}% (${r.fails}/${r.attempts})</span>`;
+      list.appendChild(div);
+    });
+  }
+  async function renderRankingView(){
+    const list = document.getElementById('rankingList');
+    list.innerHTML = '<div class="empty-msg">Cargando ranking…</div>';
+    const q = query(collection(db, 'leaderboard'), orderBy('bestTime','asc'), limit(10));
+    const snap = await getDocs(q);
+    const rows = snap.docs.map(d => d.data());
+    list.innerHTML = '';
+    if (rows.length === 0) { list.innerHTML = '<div class="empty-msg">Todavía nadie ha completado un Rosco.</div>'; return; }
+    rows.forEach((r, i) => {
+      const div = document.createElement('div');
+      div.className = 'rank-row';
+      div.innerHTML = `<span class="pos">${i+1}</span><img src="${r.photoURL}" onerror="this.style.display='none'"><span class="rname">${r.displayName}</span><span class="rtime">${fmtTime(Math.round(r.bestTime))}</span>`;
+      list.appendChild(div);
+    });
   }
 
-  /* ---------------- Construcción de la partida ---------------- */
-  function buildRosco(){
+  /* ---------------- ROSCO (modo normal / práctica sin tiempo) ---------------- */
+  function buildRoscoCells(bank){
     const cells = [];
     for (const letter of LETTERS) {
-      const candidates = wordBank.filter(w => w.l === letter);
+      const candidates = bank.filter(w => w.l === letter);
       if (candidates.length === 0) continue;
       const pick = candidates[Math.floor(Math.random() * candidates.length)];
       cells.push({
-        letter,
-        mode: pick.m,
-        definition: pick.d,
-        answers: pick.a,
+        letter, mode: pick.m, definition: pick.d, answers: pick.a,
         normAnswers: pick.a.map(normalize),
-        status: 'pending', // pending | correct | wrong | skipped
-        userAnswer: ''
+        status: 'pending', userAnswer: '', approx: false, hintLevel: 0
       });
     }
     return cells;
   }
-
   function layoutRosco(){
     const area = document.getElementById('roscoArea');
     area.querySelectorAll('.rosco-letter').forEach(el => el.remove());
@@ -472,19 +651,14 @@
     const cx = area.clientWidth / 2, cy = area.clientHeight / 2;
     game.cells.forEach((cell, i) => {
       const angle = (i / n) * 2 * Math.PI - Math.PI/2;
-      const x = cx + radius * Math.cos(angle);
-      const y = cy + radius * Math.sin(angle);
+      const x = cx + radius * Math.cos(angle), y = cy + radius * Math.sin(angle);
       const el = document.createElement('div');
-      el.className = 'rosco-letter';
-      el.id = 'cell-' + i;
-      el.style.left = x + 'px';
-      el.style.top = y + 'px';
-      el.textContent = cell.letter;
+      el.className = 'rosco-letter'; el.id = 'cell-' + i;
+      el.style.left = x + 'px'; el.style.top = y + 'px'; el.textContent = cell.letter;
       area.appendChild(el);
     });
     refreshRoscoVisuals();
   }
-
   function refreshRoscoVisuals(){
     game.cells.forEach((cell, i) => {
       const el = document.getElementById('cell-' + i);
@@ -493,7 +667,6 @@
       if (i === game.activeIndex) el.classList.add('active');
     });
   }
-
   function nextPendingIndex(fromIndex){
     const n = game.cells.length;
     for (let step = 1; step <= n; step++) {
@@ -502,104 +675,102 @@
     }
     return -1;
   }
-
+  function hintText(cell){
+    const answer = cell.answers[0];
+    if (cell.hintLevel <= 0) return '';
+    const shown = answer.slice(0, cell.hintLevel).split('').join(' ');
+    const rest = answer.length - cell.hintLevel;
+    return shown + ' ' + '_ '.repeat(Math.max(rest,0)).trim() + `  (${answer.length} letras)`;
+  }
   function renderCurrentPrompt(){
     const cell = game.cells[game.activeIndex];
     document.getElementById('promptMode').firstChild.textContent = cell.mode === 'contiene' ? 'CONTIENE ' : 'EMPIEZA CON ';
     document.getElementById('promptLetter').textContent = cell.letter;
     document.getElementById('promptDef').textContent = cell.definition;
+    document.getElementById('hintDisplay').textContent = hintText(cell);
     const input = document.getElementById('answerInput');
-    input.value = '';
-    input.classList.remove('flash-correct','flash-wrong');
-    input.focus();
+    input.value = ''; input.classList.remove('flash-correct','flash-wrong'); input.focus();
     refreshRoscoVisuals();
   }
-
-  function startGame(){
+  function startGame(isPractice){
+    const bank = activeWordBank();
     game = {
-      cells: buildRosco(),
-      activeIndex: 0,
-      correct: 0,
-      wrong: 0,
-      timeLeft: settings.timeLimit,
-      totalTime: settings.timeLimit,
+      practiceMode: !!isPractice,
+      cells: buildRoscoCells(bank),
+      activeIndex: 0, correct: 0, wrong: 0,
+      timeLeft: isPractice ? null : settings.timeLimit,
+      totalTime: isPractice ? null : settings.timeLimit,
       finished: false
     };
+    document.getElementById('modeBadge').textContent = isPractice ? 'PRÁCTICA · SIN TIEMPO' : 'ROSCO';
     showView('game');
     layoutRosco();
     renderCurrentPrompt();
     updateHud();
     clearInterval(timerInterval);
-    timerInterval = setInterval(tickTimer, 1000);
+    if (!isPractice) timerInterval = setInterval(tickTimer, 1000);
   }
-
   function updateHud(){
     document.getElementById('timerDisplay').textContent = fmtTime(game.timeLeft);
-    document.getElementById('timerDisplay').classList.toggle('low', game.timeLeft <= 15);
+    document.getElementById('timerDisplay').classList.toggle('low', game.timeLeft !== null && game.timeLeft <= 15);
     document.getElementById('scoreCorrect').textContent = '✓ ' + game.correct;
     document.getElementById('scoreWrong').textContent = '✗ ' + game.wrong;
   }
-
   function tickTimer(){
     game.timeLeft--;
+    if (game.timeLeft <= 10 && game.timeLeft > 0) sndTick();
     updateHud();
-    if (game.timeLeft <= 0) {
-      endGame(false, 'tiempo');
-    }
+    if (game.timeLeft <= 0) { sndTimeUp(); endGame(false, 'tiempo'); }
   }
-
-  function allResolved(){
-    return game.cells.every(c => c.status === 'correct' || c.status === 'wrong');
-  }
-
+  function allResolved(){ return game.cells.every(c => c.status === 'correct' || c.status === 'wrong'); }
   function advanceTurn(){
     const idx = nextPendingIndex(game.activeIndex);
-    if (idx === -1 || allResolved()) {
-      endGame(allResolved(), allResolved() ? 'completado' : 'tiempo');
-      return;
-    }
+    if (idx === -1 || allResolved()) { endGame(allResolved(), allResolved() ? 'completado' : 'tiempo'); return; }
     game.activeIndex = idx;
     renderCurrentPrompt();
   }
-
   function checkAnswer(){
     if (game.finished) return;
     const cell = game.cells[game.activeIndex];
     const input = document.getElementById('answerInput');
-    const value = normalize(input.value);
-    if (!value) return;
-    const isCorrect = cell.normAnswers.includes(value);
+    if (!input.value.trim()) return;
+    const result = matchesAnswer(input.value, cell.normAnswers);
     cell.userAnswer = input.value.trim();
-    cell.status = isCorrect ? 'correct' : 'wrong';
-    if (isCorrect) game.correct++; else game.wrong++;
-    input.classList.add(isCorrect ? 'flash-correct' : 'flash-wrong');
+    cell.approx = result.approx || false;
+    cell.status = result.ok ? 'correct' : 'wrong';
+    if (result.ok) { game.correct++; sndCorrect(); } else { game.wrong++; sndWrong(); }
+    input.classList.add(result.ok ? 'flash-correct' : 'flash-wrong');
     updateHud();
     setTimeout(advanceTurn, 380);
   }
-
   function passTurn(){
     if (game.finished) return;
     const cell = game.cells[game.activeIndex];
     if (cell.status === 'pending') cell.status = 'skipped';
     advanceTurn();
   }
-
+  function useHint(){
+    const cell = game.cells[game.activeIndex];
+    if (cell.hintLevel >= cell.answers[0].length - 1) return;
+    cell.hintLevel++;
+    if (!game.practiceMode && game.timeLeft !== null) { game.timeLeft = Math.max(0, game.timeLeft - 5); updateHud(); }
+    document.getElementById('hintDisplay').textContent = hintText(cell);
+  }
   document.getElementById('checkBtn').addEventListener('click', checkAnswer);
   document.getElementById('passBtn').addEventListener('click', passTurn);
+  document.getElementById('hintBtn').addEventListener('click', useHint);
   document.getElementById('quitBtn').addEventListener('click', () => endGame(false, 'rendido'));
-  document.getElementById('answerInput').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') checkAnswer();
-  });
+  document.getElementById('answerInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') checkAnswer(); });
 
   async function endGame(won, reason){
     if (!game || game.finished) return;
     game.finished = true;
     clearInterval(timerInterval);
-    const timeUsed = game.totalTime - Math.max(game.timeLeft, 0);
+    const timeUsed = game.totalTime === null ? null : game.totalTime - Math.max(game.timeLeft, 0);
 
     document.getElementById('resultTitle').textContent = won ? '¡Rosco completado!' : 'Rosco terminado';
     const reasonTxt = reason === 'tiempo' ? 'Se acabó el tiempo' : reason === 'rendido' ? 'Te has rendido' : 'Todas las letras resueltas';
-    document.getElementById('resultOutcome').textContent = reasonTxt + ' · ' + fmtTime(timeUsed) + ' jugados';
+    document.getElementById('resultOutcome').textContent = reasonTxt + (timeUsed !== null ? ' · ' + fmtTime(timeUsed) + ' jugados' : ' · modo práctica');
 
     const statsBox = document.getElementById('resultStats');
     statsBox.innerHTML = '';
@@ -616,32 +787,137 @@
 
     const reviewList = document.getElementById('reviewList');
     reviewList.innerHTML = '';
+    const failedWords = [];
+    const letterResults = {};
     game.cells.forEach(cell => {
-      const div = document.createElement('div');
       const status = cell.status === 'correct' ? 'correct' : 'wrong';
+      if (cell.status === 'correct' || cell.status === 'wrong') letterResults[cell.letter] = cell.status;
+      const div = document.createElement('div');
       div.className = 'review-item ' + status;
       const shown = (cell.status === 'correct' || cell.status === 'wrong') ? cell.userAnswer : '(sin responder)';
-      div.innerHTML = `<span class="l">${cell.letter}</span><span class="txt">${shown} — <b>${cell.answers[0]}</b></span>`;
+      div.innerHTML = `<span class="l">${cell.letter}</span><span class="txt">${shown} — <b>${cell.answers[0]}</b> ${cell.approx ? '<span class="approx">(con tolerancia a errata)</span>' : ''}</span>`;
       reviewList.appendChild(div);
+      if (cell.status === 'wrong') {
+        failedWords.push({ letter: cell.letter, mode: cell.mode, definition: cell.definition, answers: cell.answers, userAnswer: cell.userAnswer });
+      }
     });
 
     showView('results');
-    await saveGameResult({
-      won,
-      reason,
-      correct: game.correct,
-      wrong: game.wrong,
-      unresolved: game.cells.filter(c=>c.status!=='correct'&&c.status!=='wrong').length,
-      timeUsed,
-      timeLimit: game.totalTime
-    });
-    await renderHomeStats();
+    if (!game.practiceMode) {
+      await saveGameResult({
+        mode: 'rosco', won, reason, correct: game.correct, wrong: game.wrong,
+        unresolved: game.cells.filter(c=>c.status!=='correct'&&c.status!=='wrong').length,
+        timeUsed, timeLimit: game.totalTime, letterResults, failedWords
+      });
+      await renderHomeStats();
+    }
   }
 
-  document.getElementById('playBtn').addEventListener('click', startGame);
-  document.getElementById('playAgainBtn').addEventListener('click', startGame);
+  document.getElementById('playBtn').addEventListener('click', () => startGame(false));
+  document.getElementById('practiceBtn').addEventListener('click', () => startGame(true));
+  document.getElementById('playAgainBtn').addEventListener('click', async () => { await renderHomeStats(); showView('home'); });
 
   window.addEventListener('resize', () => { if (game && !views.game.classList.contains('hidden')) layoutRosco(); });
+
+  /* ---------------- REPASO DE ERRORES (lineal, sin tiempo) ---------------- */
+  document.getElementById('reviewBtn').addEventListener('click', startReview);
+
+  async function startReview(){
+    const games = await fetchRecentGames(15);
+    const seen = new Set();
+    const words = [];
+    games.forEach(g => {
+      (g.failedWords || []).forEach(fw => {
+        const key = fw.definition;
+        if (!seen.has(key)) { seen.add(key); words.push(fw); }
+      });
+    });
+    if (words.length === 0) {
+      alert('Todavía no tienes palabras falladas registradas — ¡juega un Rosco primero!');
+      return;
+    }
+    const items = words.slice(0, 30).map(fw => ({
+      letter: fw.letter, mode: fw.mode, definition: fw.definition, answers: fw.answers,
+      normAnswers: fw.answers.map(normalize), status: 'pending', userAnswer: '', approx: false, hintLevel: 0
+    }));
+    practice = { items, index: 0, correct: 0, wrong: 0, finished: false };
+    document.getElementById('modeBadgeP').textContent = 'REPASO DE ERRORES';
+    showView('practice');
+    renderPracticeItem();
+  }
+  function renderPracticeItem(){
+    const item = practice.items[practice.index];
+    document.getElementById('promptModeP').firstChild.textContent = item.mode === 'contiene' ? 'CONTIENE ' : 'EMPIEZA CON ';
+    document.getElementById('promptLetterP').textContent = item.letter;
+    document.getElementById('promptDefP').textContent = item.definition;
+    document.getElementById('hintDisplayP').textContent = hintTextGeneric(item);
+    document.getElementById('practiceProgress').textContent = `${practice.index+1} / ${practice.items.length}`;
+    const input = document.getElementById('answerInputP');
+    input.value = ''; input.classList.remove('flash-correct','flash-wrong'); input.focus();
+    document.getElementById('scoreCorrectP').textContent = '✓ ' + practice.correct;
+    document.getElementById('scoreWrongP').textContent = '✗ ' + practice.wrong;
+  }
+  function hintTextGeneric(item){
+    if (item.hintLevel <= 0) return '';
+    const answer = item.answers[0];
+    const shown = answer.slice(0, item.hintLevel).split('').join(' ');
+    const rest = answer.length - item.hintLevel;
+    return shown + ' ' + '_ '.repeat(Math.max(rest,0)).trim() + `  (${answer.length} letras)`;
+  }
+  function practiceCheck(){
+    if (practice.finished) return;
+    const item = practice.items[practice.index];
+    const input = document.getElementById('answerInputP');
+    if (!input.value.trim()) return;
+    const result = matchesAnswer(input.value, item.normAnswers);
+    item.userAnswer = input.value.trim(); item.approx = result.approx;
+    item.status = result.ok ? 'correct' : 'wrong';
+    if (result.ok) { practice.correct++; sndCorrect(); } else { practice.wrong++; sndWrong(); }
+    input.classList.add(result.ok ? 'flash-correct' : 'flash-wrong');
+    setTimeout(practiceAdvance, 380);
+  }
+  function practiceAdvance(){
+    if (practice.index + 1 >= practice.items.length) { endReview(); return; }
+    practice.index++;
+    renderPracticeItem();
+  }
+  function practicePass(){
+    if (practice.finished) return;
+    practiceAdvance();
+  }
+  function practiceHint(){
+    const item = practice.items[practice.index];
+    if (item.hintLevel >= item.answers[0].length - 1) return;
+    item.hintLevel++;
+    document.getElementById('hintDisplayP').textContent = hintTextGeneric(item);
+  }
+  function endReview(){
+    practice.finished = true;
+    document.getElementById('resultTitle').textContent = 'Repaso terminado';
+    document.getElementById('resultOutcome').textContent = `${practice.items.length} palabras repasadas`;
+    const statsBox = document.getElementById('resultStats');
+    statsBox.innerHTML = '';
+    [{num: practice.correct, lbl:'Aciertos'},{num: practice.wrong, lbl:'Fallos'}].forEach(s => {
+      const div = document.createElement('div'); div.className='stat-pill';
+      div.innerHTML = `<div class="num">${s.num}</div><div class="lbl">${s.lbl}</div>`;
+      statsBox.appendChild(div);
+    });
+    const reviewList = document.getElementById('reviewList');
+    reviewList.innerHTML = '';
+    practice.items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'review-item ' + (item.status === 'correct' ? 'correct' : 'wrong');
+      const shown = item.userAnswer || '(sin responder)';
+      div.innerHTML = `<span class="l">${item.letter}</span><span class="txt">${shown} — <b>${item.answers[0]}</b></span>`;
+      reviewList.appendChild(div);
+    });
+    showView('results');
+  }
+  document.getElementById('checkBtnP').addEventListener('click', practiceCheck);
+  document.getElementById('passBtnP').addEventListener('click', practicePass);
+  document.getElementById('hintBtnP').addEventListener('click', practiceHint);
+  document.getElementById('quitBtnP').addEventListener('click', endReview);
+  document.getElementById('answerInputP').addEventListener('keydown', (e) => { if (e.key === 'Enter') practiceCheck(); });
 </script>
 </body>
 </html>

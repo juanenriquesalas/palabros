@@ -87,6 +87,18 @@ quedaron registradas ahí — a toda respuesta de tu banco de definiciones que n
 coincidiera con ninguna palabra del corpus se le asignó nivel 6 por defecto,
 tal como pediste.
 
+**Corrección aplicada:** el reparto de niveles 1–5 se hace por **frecuencia
+real global**, no por la posición de cada palabra dentro del ranking de su
+propia letra. Con el ranking por letra, una palabra rarísima como "ñandutí"
+(aparece 12 veces en el corpus) quedaba en nivel 2 solo por competir contra
+pocas palabras con Ñ, mientras que una palabra bastante común como
+"circunstancia" (13.093 apariciones) quedaba en nivel 4 por competir contra
+miles de palabras con C. Ahora los tramos (los mismos tamaños del documento
+original: 216/459/945/1856/3120 palabras para los niveles 1 a 5) se calculan
+ordenando **todas** las palabras del corpus juntas por frecuencia, sin
+separarlas por letra primero — así el nivel refleja qué tan común es la
+palabra en español en general, no cuánta competencia tiene su letra inicial.
+
 El juego avanza por una **escalera de 50 escalones**: en el escalón 1 el Rosco
 es casi todo vocabulario nivel 1–2 (muy fácil); en el escalón 50 es casi todo
 nivel 4–6 (difícil/muy difícil). La proporción de cada nivel dentro de las 25

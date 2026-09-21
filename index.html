@@ -382,12 +382,15 @@
 
   // 23 letras siempre presentes en cada rosco; las 2 restantes salen de la
   // rotación K/Ñ/Q/W (2 de las 4 en cada escalón, ciclo de 4 escalones) para
-  // completar los 25 casilleros.
-  const FIXED_LETTERS = ['A','B','C','D','E','F','G','H','I','J','L','M','N','O','P','R','S','T','U','V','X','Y','Z'];
+  // completar los 25 casilleros. Se arma filtrando el alfabeto completo (en
+  // vez de agregar las rotativas al final) para que la letra que le toque a
+  // cada escalón quede en su posición alfabética correcta dentro del rosco.
+  const ALPHA_ORDER = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+  const FIXED_LETTERS_SET = new Set(['A','B','C','D','E','F','G','H','I','J','L','M','N','O','P','R','S','T','U','V','X','Y','Z']);
   const ROTATING_PAIRS = [['K','Ñ'],['Ñ','Q'],['Q','W'],['W','K']];
   function lettersForEscalon(escalon){
-    const pair = ROTATING_PAIRS[(escalon - 1) % 4];
-    return [...FIXED_LETTERS, ...pair];
+    const pair = new Set(ROTATING_PAIRS[(escalon - 1) % 4]);
+    return ALPHA_ORDER.filter(l => FIXED_LETTERS_SET.has(l) || pair.has(l));
   }
 
   let currentUser = null;

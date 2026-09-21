@@ -81,6 +81,12 @@
   .cat-actions{ display:flex; gap:8px; margin-top:8px; }
   .cat-actions button{ font-size:11px; padding:4px 8px; background:transparent; color:var(--teal); border:1px solid var(--teal); border-radius:3px;}
 
+  .diff-mode-row{ display:flex; gap:8px; margin-bottom:10px; }
+  .diff-mode-btn{ flex:1; font-size:12px; padding:8px; border-radius:4px; background:var(--paper); color:var(--ink-soft); border:1.5px solid rgba(30,42,50,0.2); }
+  .diff-mode-btn.active{ background:var(--teal); color:#fff; border-color:var(--teal); }
+  .diff-info{ font-size:12px; color:var(--ink-soft); line-height:1.5; background:var(--paper); border-radius:4px; padding:10px 12px; }
+  .diff-hint{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); margin-top:6px; }
+
   .game-wrap{ display:flex; flex-direction:column; align-items:center; gap:18px; width:100%; padding-bottom: 190px; }
   .hud{ display:flex; align-items:center; gap:26px; flex-wrap:wrap; justify-content:center;}
   .hud .timer{ font-family:'IBM Plex Mono',monospace; font-size:28px; font-weight:600; padding: 4px 16px; border-radius:4px; border:2px solid var(--teal-dark); color:var(--teal-dark); min-width:96px; text-align:center;}
@@ -137,11 +143,14 @@
   .results-card .outcome{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-soft); margin-bottom:20px; }
   .results-stats{ display:flex; justify-content:center; gap:16px; margin-bottom:24px; flex-wrap:wrap;}
   .review-list{ text-align:left; max-height:220px; overflow-y:auto; border-top:1px solid rgba(30,42,50,0.15); padding-top:14px; margin-bottom:22px;}
-  .review-item{ display:flex; gap:10px; font-size:13px; padding:4px 0; align-items:baseline;}
-  .review-item .l{ font-family:'IBM Plex Mono',monospace; font-weight:700; width:22px; flex-shrink:0;}
+  .review-item{ display:flex; gap:10px; font-size:13px; padding:6px 0; align-items:flex-start; border-bottom:1px solid rgba(30,42,50,0.06);}
+  .review-item .l{ font-family:'IBM Plex Mono',monospace; font-weight:700; width:22px; flex-shrink:0; padding-top:1px;}
   .review-item.correct .l{ color:var(--green); } .review-item.wrong .l{ color:var(--red); }
+  .review-item .body{ flex:1; min-width:0; }
   .review-item .txt{ color:var(--ink-soft); } .review-item .txt b{ color:var(--ink); font-weight:600;}
   .review-item .approx{ font-size:11px; color:var(--gold); }
+  .review-item .def-text{ font-size:12px; color:var(--ink-soft); font-style:italic; margin-top:2px; line-height:1.3; }
+  .review-item .level-tag{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink-soft); border:1px solid rgba(30,42,50,0.2); border-radius:3px; padding:0px 5px; margin-left:6px; }
 
   .stats-list{ text-align:left; max-height:320px; overflow-y:auto; }
   .stats-row{ display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid rgba(30,42,50,0.08);}
@@ -232,6 +241,24 @@
       <div class="toggle-row"><label style="margin-bottom:0;">Sonido</label><input type="checkbox" id="soundToggle" checked></div>
     </div>
     <div class="field">
+      <label>Dificultad del Rosco</label>
+      <div class="diff-mode-row">
+        <button type="button" class="diff-mode-btn active" id="diffModeAutoBtn" data-mode="auto">Automática</button>
+        <button type="button" class="diff-mode-btn" id="diffModeManualBtn" data-mode="manual">Manual</button>
+      </div>
+      <div id="autoDiffInfo" class="diff-info">
+        Sube de nivel solo (+1 escalón) cada vez que completas un Rosco. Tu progreso actual:
+        <span class="mono" id="autoEscalonVal">Escalón 1 / 50</span>
+      </div>
+      <div id="manualDiffInfo" class="diff-info hidden">
+        <div class="slider-row">
+          <input type="range" id="manualEscalonSlider" min="1" max="50" step="1" value="1">
+          <span class="slider-val mono" id="manualEscalonVal">1</span>
+        </div>
+        <div class="diff-hint" id="manualEscalonHint"></div>
+      </div>
+    </div>
+    <div class="field">
       <label>Categorías incluidas <span id="catCount" class="mono" style="color:var(--ink-soft);"></span></label>
       <div class="cat-grid" id="catGrid"></div>
       <div class="cat-actions">
@@ -267,6 +294,7 @@
       <div class="timer mono" id="timerDisplay">2:00</div>
       <div class="score"><span class="c" id="scoreCorrect">✓ 0</span><span class="w" id="scoreWrong">✗ 0</span></div>
       <div class="mode-badge" id="modeBadge">ROSCO</div>
+      <div class="mode-badge" id="escalonBadge">ESCALÓN 1</div>
     </div>
     <div class="rosco-area" id="roscoArea">
       <div class="rosco-center">
@@ -345,10 +373,32 @@
 
   const LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','X','Y','Z'];
 
+  // Composición de cada uno de los 50 "escalones" de dificultad: cuántas de
+  // las 25 casillas del rosco deben salir de cada nivel de palabra (1 a 6).
+  // Se interpola linealmente entre el vector fácil [0.45,0.35,0.15,0.05,0,0]
+  // y el vector difícil [0,0,0.05,0.20,0.35,0.40] a lo largo de los 50
+  // escalones (t = (g-1)/49), redondeado a enteros que sumen 25.
+  const ESCALERA = [[11,9,4,1,0,0],[11,9,4,1,0,0],[11,8,4,1,0,1],[11,8,4,1,0,1],[10,8,3,2,1,1],[10,8,3,2,1,1],[10,8,3,2,1,1],[10,8,3,2,1,1],[9,7,3,2,2,2],[9,7,3,2,2,2],[9,7,3,2,2,2],[9,7,3,2,2,2],[9,7,3,2,2,2],[8,7,3,2,2,3],[8,6,3,2,3,3],[8,6,3,2,3,3],[8,6,3,2,3,3],[7,6,3,3,3,3],[7,5,3,3,3,4],[7,5,3,3,3,4],[7,5,3,3,3,4],[6,5,3,3,4,4],[6,5,3,3,4,4],[6,5,2,3,4,5],[6,4,3,3,4,5],[6,4,3,3,4,5],[5,4,3,3,5,5],[5,4,2,3,5,6],[5,4,2,3,5,6],[5,4,2,3,5,6],[4,4,2,4,5,6],[4,3,2,4,6,6],[4,3,2,4,6,6],[3,3,2,4,6,7],[3,3,2,4,6,7],[3,3,2,4,6,7],[3,2,2,4,7,7],[3,2,2,4,7,7],[2,2,2,4,7,8],[2,2,2,4,7,8],[2,2,2,4,7,8],[2,2,2,4,7,8],[2,1,2,4,7,9],[1,1,2,4,8,9],[1,1,1,5,8,9],[1,1,1,5,8,9],[1,1,1,5,8,9],[1,0,1,5,8,10],[0,0,1,5,9,10],[0,0,1,5,9,10]];
+
+  // 23 letras siempre presentes en cada rosco; las 2 restantes salen de la
+  // rotación K/Ñ/Q/W (2 de las 4 en cada escalón, ciclo de 4 escalones) para
+  // completar los 25 casilleros.
+  const FIXED_LETTERS = ['A','B','C','D','E','F','G','H','I','J','L','M','N','O','P','R','S','T','U','V','X','Y','Z'];
+  const ROTATING_PAIRS = [['K','Ñ'],['Ñ','Q'],['Q','W'],['W','K']];
+  function lettersForEscalon(escalon){
+    const pair = ROTATING_PAIRS[(escalon - 1) % 4];
+    return [...FIXED_LETTERS, ...pair];
+  }
+
   let currentUser = null;
   let wordBank = [];
   let categories = []; // [{name, count}]
-  let settings = { timeLimit: 120, ignoreAccents: true, fuzzy: true, sound: true, excludedCategories: [] };
+  let settings = {
+    timeLimit: 120, ignoreAccents: true, fuzzy: true, sound: true, excludedCategories: [],
+    difficultyMode: 'auto', // 'auto' | 'manual'
+    manualEscalon: 1
+  };
+  let progress = { escalon: 1 }; // progreso del modo automático, persistido en Firestore
   let game = null;
   let practice = null;
   let timerInterval = null;
@@ -469,7 +519,9 @@
       document.getElementById('userName').textContent = user.displayName || user.email;
       await loadWordBank();
       await loadUserSettings();
+      await loadUserProgress();
       renderCategoryGrid();
+      renderDifficultyUI();
       await renderHomeStats();
       showView('home');
     } else {
@@ -509,6 +561,52 @@
     document.getElementById('fuzzyToggle').checked = settings.fuzzy;
     document.getElementById('soundToggle').checked = settings.sound;
   }
+  async function loadUserProgress(){
+    if (!currentUser) return;
+    const ref = doc(db, 'users', currentUser.uid);
+    const snap = await getDoc(ref);
+    if (snap.exists() && snap.data().progress) {
+      progress = { ...progress, ...snap.data().progress };
+    } else {
+      await setDoc(ref, { progress }, { merge: true });
+    }
+  }
+  async function saveUserProgress(){
+    if (!currentUser) return;
+    await setDoc(doc(db, 'users', currentUser.uid), { progress }, { merge: true });
+  }
+  /* ---------------- Dificultad (escalones 1-50, automática o manual) ---------------- */
+  function currentEscalon(){
+    const e = settings.difficultyMode === 'manual' ? settings.manualEscalon : progress.escalon;
+    return Math.min(Math.max(e, 1), 50);
+  }
+  function renderDifficultyUI(){
+    const isManual = settings.difficultyMode === 'manual';
+    document.getElementById('diffModeAutoBtn').classList.toggle('active', !isManual);
+    document.getElementById('diffModeManualBtn').classList.toggle('active', isManual);
+    document.getElementById('autoDiffInfo').classList.toggle('hidden', isManual);
+    document.getElementById('manualDiffInfo').classList.toggle('hidden', !isManual);
+    document.getElementById('autoEscalonVal').textContent = `Escalón ${progress.escalon} / 50`;
+    document.getElementById('manualEscalonSlider').value = settings.manualEscalon;
+    document.getElementById('manualEscalonVal').textContent = settings.manualEscalon;
+    document.getElementById('manualEscalonHint').textContent = escalonHintText(settings.manualEscalon);
+  }
+  function escalonHintText(escalon){
+    const comp = ESCALERA[escalon - 1];
+    const dificilOSuperior = comp[3] + comp[4] + comp[5];
+    return `${dificilOSuperior} de 25 palabras serán de nivel difícil o superior.`;
+  }
+  document.querySelectorAll('.diff-mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      settings.difficultyMode = btn.dataset.mode;
+      renderDifficultyUI();
+    });
+  });
+  document.getElementById('manualEscalonSlider').addEventListener('input', (e) => {
+    settings.manualEscalon = parseInt(e.target.value, 10);
+    document.getElementById('manualEscalonVal').textContent = settings.manualEscalon;
+    document.getElementById('manualEscalonHint').textContent = escalonHintText(settings.manualEscalon);
+  });
   function renderCategoryGrid(){
     const grid = document.getElementById('catGrid');
     grid.innerHTML = '';
@@ -541,12 +639,14 @@
     settings.ignoreAccents = document.getElementById('accentToggle').checked;
     settings.fuzzy = document.getElementById('fuzzyToggle').checked;
     settings.sound = document.getElementById('soundToggle').checked;
+    settings.manualEscalon = parseInt(document.getElementById('manualEscalonSlider').value, 10);
     settings.excludedCategories = Array.from(document.querySelectorAll('#catGrid input'))
       .filter(cb => !cb.checked).map(cb => cb.dataset.cat);
     if (currentUser) await setDoc(doc(db, 'users', currentUser.uid), { settings }, { merge: true });
     showView('home');
   }
   document.getElementById('settingsBtn') && document.getElementById('settingsBtn').addEventListener('click', () => showView('settings'));
+  document.getElementById('settingsNavBtn') && document.getElementById('settingsNavBtn').addEventListener('click', renderDifficultyUI);
   document.getElementById('backFromSettings').addEventListener('click', () => showView('home'));
   document.getElementById('saveSettingsBtn').addEventListener('click', saveUserSettings);
   document.getElementById('timeSlider').addEventListener('input', (e) => {
@@ -593,6 +693,7 @@
       { num: played, lbl: 'Últimas partidas' },
       { num: won, lbl: 'Roscos ganados' },
       { num: bestTime === Infinity ? '—' : fmtTime(Math.round(bestTime)), lbl: 'Mejor tiempo' },
+      { num: progress.escalon + '/50', lbl: 'Escalón actual' },
     ].forEach(p => {
       const div = document.createElement('div');
       div.className = 'stat-pill';
@@ -654,6 +755,7 @@
 
   /* ---------------- ROSCO (modo normal / práctica sin tiempo) ---------------- */
   function buildRoscoCells(bank){
+    // Modo práctica: se mantiene la selección simple, sin escalón de dificultad.
     const cells = [];
     for (const letter of LETTERS) {
       const candidates = bank.filter(w => w.l === letter);
@@ -665,6 +767,50 @@
         status: 'pending', userAnswer: '', approx: false, hintLevel: 0
       });
     }
+    return cells;
+  }
+
+  // Genera las 25 casillas del rosco (23 letras fijas + 2 rotativas
+  // K/Ñ/Q/W) respetando el "escalón" de dificultad: a cada letra le toca
+  // un nivel de palabra (1=muy fácil .. 6=muy difícil) según la
+  // composición de ese escalón. Si la letra no tiene suficientes palabras
+  // en el nivel exacto que le tocó, se usa el nivel disponible más
+  // cercano para esa letra.
+  function buildRoscoCellsByEscalon(bank, escalon){
+    const letters = lettersForEscalon(escalon);
+    const composition = ESCALERA[escalon - 1]; // [n1,n2,n3,n4,n5,n6], suma 25
+    const levelBag = [];
+    composition.forEach((count, idx) => { for (let i=0;i<count;i++) levelBag.push(idx+1); });
+    // baraja el bag de niveles para no asignar siempre los niveles fáciles a las primeras letras
+    for (let i = levelBag.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [levelBag[i], levelBag[j]] = [levelBag[j], levelBag[i]];
+    }
+    const byLetter = {};
+    bank.forEach(w => { (byLetter[w.l] ||= []).push(w); });
+
+    const cells = [];
+    letters.forEach((letter, i) => {
+      const targetLevel = levelBag[i] || 6;
+      const pool = byLetter[letter] || [];
+      if (pool.length === 0) return; // sin palabras disponibles para esa letra (ej. categorías muy filtradas)
+      let candidates = pool.filter(w => w.n === targetLevel);
+      if (candidates.length === 0) {
+        // se busca el nivel disponible más cercano al que le tocaba a esta letra
+        let bestLevel = null, bestDist = Infinity;
+        pool.forEach(w => {
+          const dist = Math.abs(w.n - targetLevel);
+          if (dist < bestDist) { bestDist = dist; bestLevel = w.n; }
+        });
+        candidates = pool.filter(w => w.n === bestLevel);
+      }
+      const pick = candidates[Math.floor(Math.random() * candidates.length)];
+      cells.push({
+        letter, mode: pick.m, definition: pick.d, answers: pick.a,
+        normAnswers: pick.a.map(normalize), level: pick.n,
+        status: 'pending', userAnswer: '', approx: false, hintLevel: 0
+      });
+    });
     return cells;
   }
   function layoutRosco(){
@@ -718,15 +864,20 @@
   }
   function startGame(isPractice){
     const bank = activeWordBank();
+    const escalon = isPractice ? null : currentEscalon();
     game = {
       practiceMode: !!isPractice,
-      cells: buildRoscoCells(bank),
+      escalon,
+      cells: isPractice ? buildRoscoCells(bank) : buildRoscoCellsByEscalon(bank, escalon),
       activeIndex: 0, correct: 0, wrong: 0,
       timeLeft: isPractice ? null : settings.timeLimit,
       totalTime: isPractice ? null : settings.timeLimit,
       finished: false
     };
     document.getElementById('modeBadge').textContent = isPractice ? 'PRÁCTICA · SIN TIEMPO' : 'ROSCO';
+    const escalonBadge = document.getElementById('escalonBadge');
+    if (isPractice) { escalonBadge.classList.add('hidden'); }
+    else { escalonBadge.classList.remove('hidden'); escalonBadge.textContent = 'ESCALÓN ' + escalon; }
     showView('game');
     layoutRosco();
     renderCurrentPrompt();
@@ -794,7 +945,8 @@
 
     document.getElementById('resultTitle').textContent = won ? '¡Rosco completado!' : 'Rosco terminado';
     const reasonTxt = reason === 'tiempo' ? 'Se acabó el tiempo' : reason === 'rendido' ? 'Te has rendido' : 'Todas las letras resueltas';
-    document.getElementById('resultOutcome').textContent = reasonTxt + (timeUsed !== null ? ' · ' + fmtTime(timeUsed) + ' jugados' : ' · modo práctica');
+    const escalonTxt = (!game.practiceMode && game.escalon) ? ` · Escalón ${game.escalon}` : '';
+    document.getElementById('resultOutcome').textContent = reasonTxt + (timeUsed !== null ? ' · ' + fmtTime(timeUsed) + ' jugados' : ' · modo práctica') + escalonTxt;
 
     const statsBox = document.getElementById('resultStats');
     statsBox.innerHTML = '';
@@ -819,7 +971,9 @@
       const div = document.createElement('div');
       div.className = 'review-item ' + status;
       const shown = (cell.status === 'correct' || cell.status === 'wrong') ? cell.userAnswer : '(sin responder)';
-      div.innerHTML = `<span class="l">${cell.letter}</span><span class="txt">${shown} — <b>${cell.answers[0]}</b> ${cell.approx ? '<span class="approx">(con tolerancia a errata)</span>' : ''}</span>`;
+      const modeLabel = cell.mode === 'contiene' ? 'Contiene' : 'Empieza con';
+      const levelTag = cell.level ? `<span class="level-tag">nivel ${cell.level}</span>` : '';
+      div.innerHTML = `<span class="l">${cell.letter}</span><div class="body"><span class="txt">${shown} — <b>${cell.answers[0]}</b> ${cell.approx ? '<span class="approx">(con tolerancia a errata)</span>' : ''}${levelTag}</span><div class="def-text">${modeLabel} ${cell.letter}: ${cell.definition}</div></div>`;
       reviewList.appendChild(div);
       if (cell.status === 'wrong') {
         failedWords.push({ letter: cell.letter, mode: cell.mode, definition: cell.definition, answers: cell.answers, userAnswer: cell.userAnswer });
@@ -828,10 +982,17 @@
 
     showView('results');
     if (!game.practiceMode) {
+      // Progresión automática: cada Rosco ganado en modo automático sube 1 escalón (tope 50).
+      if (won && settings.difficultyMode === 'auto' && progress.escalon < 50) {
+        progress.escalon += 1;
+        await saveUserProgress();
+        renderDifficultyUI();
+      }
       await saveGameResult({
         mode: 'rosco', won, reason, correct: game.correct, wrong: game.wrong,
         unresolved: game.cells.filter(c=>c.status!=='correct'&&c.status!=='wrong').length,
-        timeUsed, timeLimit: game.totalTime, letterResults, failedWords
+        timeUsed, timeLimit: game.totalTime, letterResults, failedWords,
+        escalon: game.escalon
       });
       await renderHomeStats();
     }
@@ -953,7 +1114,8 @@
       const div = document.createElement('div');
       div.className = 'review-item ' + (item.status === 'correct' ? 'correct' : 'wrong');
       const shown = item.userAnswer || '(sin responder)';
-      div.innerHTML = `<span class="l">${item.letter}</span><span class="txt">${shown} — <b>${item.answers[0]}</b></span>`;
+      const modeLabel = item.mode === 'contiene' ? 'Contiene' : 'Empieza con';
+      div.innerHTML = `<span class="l">${item.letter}</span><div class="body"><span class="txt">${shown} — <b>${item.answers[0]}</b></span><div class="def-text">${modeLabel} ${item.letter}: ${item.definition}</div></div>`;
       reviewList.appendChild(div);
     });
     showView('results');
